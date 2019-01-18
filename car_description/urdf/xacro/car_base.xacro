@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<robot name="carbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- PROPERTY LIST -->
+		<xacro:property name="M_PI" value="3.1415926" />
+		
+		<xacro:property name="base_length" value="0.376"/>
+		<xacro:property name="base_width" value="0.280"/>
+		<xacro:property name="base_height" value="0.08" />
+
+		<xacro:property name="wheel_radius" value="0.0625"/>
+		<xacro:property name="wheel_length" value="0.04"/>
+
+		<xacro:property name="wheel_joint_x" value="0.12"/>
+		<xacro:property name="wheel_joint_y" value="0.16"/>
+		<xacro:property name="wheel_joint_z" value="0.0135"/>
+					
+		<xacro:property name="caster_radius" value="0.018"/>
+		<xacro:property name="caster_joint_x" value="-0.16"/>
+
+    <!-- Defining the colors used in this robot -->
+    <material name="yellow">
+        <color rgba="1 0.4 0 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 0.95"/>
+    </material>
+
+    <material name="gray">
+        <color rgba="0.55 0.55 0.55 1"/>
+    </material>
+
+	<material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <!-- Macro for robot wheel -->
+    <xacro:macro name="wheel" params="prefix reflect">
+        <joint name="${prefix}_wheel_joint" type="continuous">
+            <origin xyz="${-wheel_joint_x} ${reflect*wheel_joint_y} ${-wheel_joint_z}" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="${prefix}_wheel_link"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="${M_PI/2} 0 0" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length = "${wheel_length}"/>
+                </geometry>
+                <material name="gray" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <!-- Macro for robot caster -->
+    <xacro:macro name="caster" params="prefix reflect">
+        <joint name="${prefix}_caster_joint" type="continuous">
+            <origin xyz="${reflect*caster_joint_x} 0 ${-(base_height/2 + caster_radius)}" rpy="0 0 0"/>
+            <parent link="base_link"/>
+            <child link="${prefix}_caster_link"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+        <link name="${prefix}_caster_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <sphere radius="${caster_radius}" />
+                </geometry>
+                <material name="black" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+		<!-- Base FootPrint -->
+ <xacro:macro name="car_base">
+        <link name="base_footprint">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="0.001 0.001 0.001" />
+                </geometry>
+            </visual>
+        </link>
+
+        <joint name="base_footprint_joint" type="fixed">
+            <origin xyz="0 0 ${base_height/2 + caster_radius*2}" rpy="0 0 0" />        
+            <parent link="base_footprint"/>
+            <child link="base_link" />
+        </joint>
+
+		<!-- Base Link -->
+        <link name="base_link">
+            <visual>
+                <origin xyz=" 0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="${base_length} ${base_width} ${base_height}" />
+                </geometry>
+                <material name="yellow" />
+            </visual>
+        </link>
+
+        <wheel prefix="left" reflect="-1"/>
+        <wheel prefix="right" reflect="1"/>
+        <caster prefix="front" reflect="-1"/>
+
+    </xacro:macro>
+
+</robot>
