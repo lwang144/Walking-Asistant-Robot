@@ -1,0 +1,11 @@
+<launch>
+  <arg name="voice_move_topic" />
+  <arg name="CMD_VEL" 	  default="/cmd_vel" />
+  <arg name="config_file" default="$(find voice_move)/config/config_params.yaml" />
+
+  <node pkg="voice_move" type="voice_move_node" name="voice_move_node" respawn="true"> 
+    <rosparam file="$(arg config_file)" command="load" />
+    <param name="sub_move_topic" value="$(arg voice_move_topic)" />    
+    <param name="pub_move_topic" value="$(arg CMD_VEL)" />
+  </node>
+</launch>

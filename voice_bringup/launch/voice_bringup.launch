@@ -1,0 +1,39 @@
+<launch>
+	<!-- Global arguments define here,you can update default value -->
+	<arg name="wakeup_topic"     default="/voice/wakeup_topic"     doc="wakeup topic" />
+	<arg name="xf_asr_topic"     default="/voice/xf_asr_topic"     doc="xf asr topic" />
+	<arg name="xf_tts_topic"     default="/voice/xf_tts_topic"     doc="xf tts topic" />
+	<arg name="tuling_nlu_topic" default="/voice/tuling_nlu_topic" doc="tuling nlu topic" />
+	<arg name="voice_move_topic" default="/voice/voice_move_topic" doc="voice move topic" />
+	<arg name="send_goal_topic"  default="/voice/send_goal_topic"  doc="send goal topic" />
+	<arg name="initialpose"      default="/initialpose"            doc="initialpose" />
+
+	<!-- startup pocketshinx and wakeup hotword detect node -->
+	<include file="$(find pocketsphinx)/launch/pocketsphinx.launch" >
+		<arg name="wakeup_topic" value="$(arg wakeup_topic)" />
+	</include>
+
+	<include file="$(find sphinx_wakeup)/launch/sphinx_wakeup.launch" >
+		<arg name="wakeup_topic" value="$(arg wakeup_topic)" />
+    	<arg name="xf_asr_topic" value="$(arg xf_asr_topic)" />
+	</include>
+
+	<!-- launch xf_asr_node/ tuling_nlu_node/ xf_tts_node -->
+  	<include file="$(find voice_system)/launch/voice_system_bringup.launch" >
+  		<arg name="xf_asr_topic" 	 value="$(arg xf_asr_topic)" />
+		<arg name="xf_tts_topic" 	 value="$(arg xf_tts_topic)" />
+		<arg name="tuling_nlu_topic" value="$(arg tuling_nlu_topic)" />
+		<arg name="voice_move_topic" value="$(arg voice_move_topic)" />
+  	</include>
+
+  	<!-- launch voice_move_node -->
+  	<include file="$(find voice_move)/launch/voice_move.launch" >
+  		<arg name="voice_move_topic" value="$(arg voice_move_topic)" />
+  	</include>
+
+	<!-- launch send_goal_node -->
+	<include file="$(find send_goal)/launch/send_goal.launch" >
+		<arg name="send_goal_topic" value="$(arg send_goal_topic)" />
+		<arg name="initialpose" value="$(arg initialpose)" />
+	</include>
+</launch>

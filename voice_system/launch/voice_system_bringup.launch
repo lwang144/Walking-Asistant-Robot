@@ -1,0 +1,12 @@
+<launch>
+	<arg name="xf_asr_topic" />
+	<arg name="xf_tts_topic" />
+	<arg name="tuling_nlu_topic" />
+	<arg name="voice_move_topic" />
+ 	<arg name="config_file" default="$(find voice_system)/config/cmd_word_params.yaml"/>
+	<node name="xf_asr_node" pkg="voice_system" type="xf_asr_node" output="screen"/>
+	<node name="tuling_nlu_node" pkg="voice_system" type="tuling_nlu_node" output="screen">
+		<rosparam file="$(arg config_file)" command="load" />
+	</node>
+	<node name="xf_tts_node" pkg="voice_system" type="xf_tts_node" output="screen"/>
+</launch>

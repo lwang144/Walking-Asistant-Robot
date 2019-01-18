@@ -1,0 +1,10 @@
+<launch>
+  <arg name="wakeup_topic"/>
+  <arg name="xf_asr_topic"/>
+
+  <node pkg="sphinx_wakeup" type="sphinx_wakeup_node" name="sphinx_wakeup_node" output="screen">
+    <param name="sphinx_topic" value="$(arg wakeup_topic)" />
+    <param name="xf_asr_topic"    value="$(arg xf_asr_topic)" />
+    <param name="wakeup_word"  type="String" value="可乐" />
+  </node>
+</launch>

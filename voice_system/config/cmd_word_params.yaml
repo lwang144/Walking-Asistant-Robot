@@ -1,0 +1,23 @@
+#
+# Author: www.corvin.cn
+#
+# Description:语音控制小车移动的参数
+#
+# History:
+#   20180117: init this file.
+#
+
+# control move key word
+move_forward: 往前走
+move_back: 后退
+turn_left: 左转
+turn_right: 右转 
+move_left: 左边走
+move_right: 右边走
+stop_move: 停止
+
+# voice control navigation destination 
+bedroom: 带我去卧室
+dinningroom: 带我去客厅
+study: 带我去书房
+bathroom: 带我去厕所
