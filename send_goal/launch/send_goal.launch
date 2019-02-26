@@ -1,0 +1,9 @@
+<launch>
+	<arg name="send_goal_topic" default="/voice/send_goal_topic" />
+	<arg name="initialpose" default="/initialpose" />
+
+	<node pkg="send_goal" type="send_goal" name="send_goal" output="screen">
+	  <param name="send_goal_topic" value="$(arg send_goal_topic)" />    
+    	  <param name="initialpose" value="$(arg initialpose)" />
+	</node>
+</launch>
